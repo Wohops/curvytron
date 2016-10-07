@@ -16,9 +16,20 @@ function Game(room)
     window.addEventListener('error', this.stop);
     window.addEventListener('resize', this.onResize);
 
+    this.monkeyMoves = new Map();
+
     for (var avatar, i = this.avatars.items.length - 1; i >= 0; i--) {
-        this.avatars.items[i].on('die', this.onDie);
+        var avatar = this.avatars.items[i];
+        avatar.on('die', this.onDie);
+        if (avatar.player != avatar.player.client.players.items[0]) {
+          avatar.isMonkey = true;
+          this.monkeyMoves.set(avatar, random());
+        }
     }
+}
+
+function random() {
+  return Math.round(((Math.random() * 2) - 1));
 }
 
 Game.prototype = Object.create(BaseGame.prototype);
@@ -183,6 +194,15 @@ Game.prototype.draw = function(step)
 
     for (var avatar, i = this.avatars.items.length - 1; i >= 0; i--) {
         avatar = this.avatars.items[i];
+        if (avatar.isMonkey) {
+          var prevMove = this.monkeyMoves.get(avatar);
+          var nextMove = prevMove;
+          if (Math.random() < 0.03) {
+            nextMove = random();
+            this.monkeyMoves.set(avatar, nextMove);
+          }
+          avatar.input.setMove(nextMove);
+        }
         if (avatar.present && (avatar.alive || avatar.changed)) {
             this.clearAvatar(avatar);
             this.clearBonusStack(avatar);
