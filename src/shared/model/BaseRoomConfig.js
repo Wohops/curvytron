@@ -8,6 +8,7 @@ function BaseRoomConfig(room)
     this.room     = room;
     this.maxScore = null;
     this.open     = true;
+    this.classicMode = true;
     this.password = null;
 
     this.variables = {
@@ -218,6 +219,7 @@ BaseRoomConfig.prototype.serialize = function()
         variables: this.variables,
         bonuses: this.bonuses,
         open: this.open,
+        classicMode: this.classicMode,
         password: this.password
     };
 };

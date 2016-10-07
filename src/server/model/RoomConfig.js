@@ -51,6 +51,24 @@ RoomConfig.prototype.setOpen = function(open)
 };
 
 /**
+ * Set classic mode
+ *
+ * @param {Boolean} classicMode
+ */
+RoomConfig.prototype.setClassicMode = function(classicMode)
+{
+    if (this.classicMode !== classicMode) {
+        this.classicMode = classicMode;
+
+        this.emit('room:config:classicMode', {room: this.room, classicMode: this.classicMode});
+
+        return true;
+    }
+
+    return false;
+};
+
+/**
  * Get available bonuses
  *
  * @return {Array}
