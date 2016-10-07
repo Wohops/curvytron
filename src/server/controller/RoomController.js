@@ -422,7 +422,7 @@ RoomController.prototype.onPlayerAdd = function(client, data, callback)
         callback({success: true});
         this.nominateRoomMaster();
 
-        if (client.id !== player.id) {
+        if (player != client.players.items[0]) {
             player.setAsMonkey();
         }
 
