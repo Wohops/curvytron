@@ -167,6 +167,11 @@ BaseRoomConfig.prototype.getMaxScore = function()
     return this.maxScore ? this.maxScore : this.getDefaultMaxScore();
 };
 
+BaseRoomConfig.prototype.getClassicMode = function()
+{
+    return this.classicMode;
+};
+
 /**
  * Get max score
  *

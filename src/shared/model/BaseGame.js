@@ -7,7 +7,7 @@ function BaseGame(room)
 {
     EventEmitter.call(this);
 
-    this.ktlMode      = true;
+    this.ktlMode      = !room.config.getClassicMode();
     this.room         = room;
     this.name         = this.room.name;
     this.frame        = null;
