@@ -119,9 +119,13 @@ GameController.prototype.loadGame = function(game)
 
     if (this.game.ktlMode) {
       this.$scope.avatarsToDisplay = this.game.finalList.items;
+          this.$scope.toDisplayOnTop = 'KTL'
     } else {
       this.$scope.avatarsToDisplay = this.game.avatars.items;
+      this.$scope.toDisplayOnTop = this.game.maxScore;
     }
+
+
 
     this.attachEvents();
 
