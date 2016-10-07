@@ -104,7 +104,11 @@ RoundController.prototype.onRoundEnd = function(e)
 RoundController.prototype.onEnd = function(e)
 {
     this.notifier.notify('Game over!', null, 'win');
-    this.$scope.winner = this.game.roundWinner;
+    if (this.game.ktlMode) {
+      this.$scope.winner = this.game.roundWinner;
+    } else {
+      this.$scope.winner = this.game.avatars.getFirst();
+    }
 
     var winner = this.game.roundWinner;
     var loser = this.game.avatars.items[0];

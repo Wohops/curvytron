@@ -96,7 +96,7 @@ Game.prototype.onFrame = function(step)
  */
 Game.prototype.onRoundNew = function()
 {
-    if (this.loser) {
+    if (this.ktlMode && this.loser) {
       this.avatars.remove(this.loser);
       this.finalList.add(this.loser);
     }

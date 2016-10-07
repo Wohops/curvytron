@@ -117,6 +117,12 @@ GameController.prototype.loadGame = function(game)
     this.$scope.avatars = this.game.avatars.items;
     this.$scope.finalList = this.game.finalList.items;
 
+    if (this.game.ktlMode) {
+      this.$scope.avatarsToDisplay = this.game.finalList.items;
+    } else {
+      this.$scope.avatarsToDisplay = this.game.avatars.items;
+    }
+
     this.attachEvents();
 
     this.repository.on('round:new', this.onFirstRound);

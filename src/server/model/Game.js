@@ -130,7 +130,11 @@ Game.prototype.isWon = function()
     if (this.avatars.count() > 1 && present <= 1) { return true; }
 
     var maxScore = this.maxScore,
-        players = this.avatars.filter(function () { return this.present; });
+        players = this.avatars.filter(function () { return this.present && this.score >= maxScore; });
+
+    if (this.ktlMode) {
+        players = this.avatars.filter(function () { return this.present });
+    }
 
     if (players.count() === 0) {
         return null;
@@ -140,13 +144,13 @@ Game.prototype.isWon = function()
         return players.getFirst();
     }
 
-    //this.sortAvatars(players);
+    this.sortAvatars(players);
 
-    if (this.avatars.count() == 2) {
+    if (this.ktlMode && this.avatars.count() == 2) {
       return this.roundWinner;
     }
 
-    return null;
+    return this.ktlMode ? null : (players.items[0].score === players.items[1].score ? null : players.getFirst());
 };
 
 /**
@@ -247,10 +251,9 @@ Game.prototype.onRoundNew = function()
     this.deaths.clear();
     this.bonusStack.clear();
 
-
     for (i = this.avatars.items.length - 1; i >= 0; i--) {
        avatar = this.avatars.items[i];
-       if (this.loser != null && avatar.id == this.loser.id) {
+       if (this.ktlMode && this.loser != null && avatar.id == this.loser.id) {
           this.avatars.remove(avatar);
           break;
        }
