@@ -59,11 +59,21 @@ RoomConfig.prototype.presets = [
 /**
  * Set open
  *
- * @param {String} open
+ * @param {Boolean} open
  */
 RoomConfig.prototype.setOpen = function(open)
 {
     this.open = open;
+};
+
+/**
+ * Set mode
+ *
+ * @param {Boolean} classicMode
+ */
+RoomConfig.prototype.setClassicMode = function(classicMode)
+{
+    this.classicMode = classicMode;
 };
 
 /**

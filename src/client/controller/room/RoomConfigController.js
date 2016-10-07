@@ -16,6 +16,7 @@ function RoomConfigController($scope, repository)
     this.toggleBonus  = this.toggleBonus.bind(this);
     this.togglePreset = this.togglePreset.bind(this);
     this.setOpen      = this.setOpen.bind(this);
+    this.setClassicMode      = this.setClassicMode.bind(this);
     this.setMaxScore  = this.setMaxScore.bind(this);
     this.setVariable  = this.setVariable.bind(this);
 
@@ -23,10 +24,12 @@ function RoomConfigController($scope, repository)
     this.$scope.toggleBonus  = this.toggleBonus;
     this.$scope.togglePreset = this.togglePreset;
     this.$scope.setOpen      = this.setOpen;
+    this.$scope.setClassicMode      = this.setClassicMode;
     this.$scope.setMaxScore  = this.setMaxScore;
     this.$scope.setVariable  = this.setVariable;
 
     this.repository.on('config:open', this.digestScope);
+    this.repository.on('config:classicMode', this.digestScope);
     this.repository.on('config:max-score', this.digestScope);
     this.repository.on('config:variable', this.digestScope);
     this.repository.on('config:bonus', this.digestScope);
@@ -113,6 +116,20 @@ RoomConfigController.prototype.setOpen = function(open)
         this.repository.setConfigOpen(open, function (result) {
             config.setOpen(result.open);
             config.setPassword(result.password);
+        });
+    }
+};
+
+/**
+ * Set classicMode
+ */
+RoomConfigController.prototype.setClassicMode = function(classicMode)
+{
+    if (this.repository.amIMaster()) {
+        var config = this.config;
+
+        this.repository.setConfigClassicMode(classicMode, function (result) {
+            config.setClassicMode(result.classicMode);
         });
     }
 };

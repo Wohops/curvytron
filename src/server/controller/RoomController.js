@@ -42,6 +42,7 @@ function RoomController(room)
         onActivity: function () { controller.onActivity(this); },
 
         onConfigOpen: function (data) { controller.onConfigOpen(this, data[0], data[1]); },
+        onConfigClassicMode: function (data) { controller.onConfigClassicMode(this, data[0], data[1]); },
         onConfigMaxScore: function (data) { controller.onConfigMaxScore(this, data[0], data[1]); },
         onConfigVariable: function (data) { controller.onConfigVariable(this, data[0], data[1]); },
         onConfigBonus: function (data) { controller.onConfigBonus(this, data[0], data[1]); },
@@ -225,6 +226,7 @@ RoomController.prototype.setRoomMaster = function(client)
         this.roomMaster.on('close', this.removeRoomMaster);
         this.roomMaster.on('room:leave', this.removeRoomMaster);
         this.roomMaster.on('room:config:open', this.callbacks.onConfigOpen);
+        this.roomMaster.on('room:config:classicMode', this.callbacks.onConfigClassicMode);
         this.roomMaster.on('room:config:max-score', this.callbacks.onConfigMaxScore);
         this.roomMaster.on('room:config:variable', this.callbacks.onConfigVariable);
         this.roomMaster.on('room:config:bonus', this.callbacks.onConfigBonus);
@@ -242,6 +244,7 @@ RoomController.prototype.removeRoomMaster = function()
         this.roomMaster.removeListener('close', this.removeRoomMaster);
         this.roomMaster.removeListener('room:leave', this.removeRoomMaster);
         this.roomMaster.removeListener('room:config:open', this.callbacks.onConfigOpen);
+        this.roomMaster.removeListener('room:config:classicMode', this.callbacks.onConfigClassicMode);
         this.roomMaster.removeListener('room:config:max-score', this.callbacks.onConfigMaxScore);
         this.roomMaster.removeListener('room:config:variable', this.callbacks.onConfigVariable);
         this.roomMaster.removeListener('room:config:bonus', this.callbacks.onConfigBonus);
@@ -599,6 +602,25 @@ RoomController.prototype.onConfigOpen = function(client, data, callback)
         });
     }
 };
+
+/**
+ * On config mode
+ *
+ * @param {SocketClient} client
+ * @param {Object} data
+ * @param {Function} callback
+ */
+RoomController.prototype.onConfigClassicMode = function(client, data, callback)
+{
+  var success = this.isRoomMaster(client) && this.room.config.setClassicMode(data.classicMode);
+
+  callback({ success: success, classicMode: this.room.config.classicMode });
+
+  if (success) {
+      this.socketGroup.addEvent('room:config:classicMode', { classicMode: this.room.config.classicMode });
+  }
+};
+
 
 /**
  * On config max score
